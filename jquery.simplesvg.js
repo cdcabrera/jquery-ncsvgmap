@@ -1,6 +1,7 @@
 /*
 * SVG Plugin
 * Copyright 2013, CDCabrera, menotyou.com
+* GitHub, https://github.com/cdcabrera/jquery-simplesvg
 * licensed under MIT license, http://opensource.org/licenses/mit-license.php
 *
 * Utilized Keith Wood's SVG for jQuery v1.4.5 plugin as a reference for what class methods to include
