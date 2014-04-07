@@ -1,0 +1,248 @@
+<!doctype html>
+<!--[if lt IE 8]> <html class="no-js lt-ie10 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie10 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <title>jQuery.NC SVG Map</title>
+
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            /*-- Normalize, http://necolas.github.com/normalize.css/ - - - - - - - - - - - - - - - - - - - --*/
+            article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}dfn{font-style:italic}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}q{quotes:"\201c" "\201d" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}
+
+            /*-- Box Modal tweak, http://www.paulirish.com/2012/box-sizing-border-box-ftw/ --*/
+            * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+            #demosvg                            {   height:500px; opacity:0; }
+
+
+            #demosvg > svg                      {   width:100%; height:100%; } /* scale your svg to the display container */
+
+            .ncsvgmap-circle                    {   fill:red; stroke:black; stroke-width:3; }
+
+            div.ncsvgmap-sidedisplay            {
+                                                    z-index:1;
+                                                    overflow:hidden;
+                                                    padding:10px;
+                                                    font-size:150%;
+                                                    font-weight:bold;
+                                                    font-family:sans-serif;
+                                                }
+
+            div.ncsvgmap-tooltip                {
+                                                    z-index:2;
+                                                    width:150px;
+                                                    font-size:16px;
+                                                    font-family:sans-serif;
+                                                    padding:4px 10px;
+                                                    background-color:#ffffff;
+                                                    border:3px solid #000000;
+                                                    border-radius: 8px;
+                                                    text-align:center;
+                                                    box-shadow: 2px 2px 5px #2c3c6d;
+                                                }
+
+            div.ncsvgmap-tooltip:after          {
+                                                    position:relative;
+                                                    display:block;
+                                                    content:"";
+                                                    bottom:-16px;
+                                                    height:0;
+                                                    width:0;
+                                                    margin:-10px auto 0;
+                                                    border-left: 10px solid transparent;
+                                                    border-right: 10px solid transparent;
+                                                    border-top: 10px solid #000000;
+                                                }
+
+            div.ncsvgmap-tooltip-above:before   {
+                                                    position:relative;
+                                                    display:block;
+                                                    content:"";
+                                                    top:-16px;
+                                                    height:0;
+                                                    width:0;
+                                                    margin:0 auto -10px;
+                                                    border-left: 10px solid transparent;
+                                                    border-right: 10px solid transparent;
+                                                    border-bottom: 10px solid #000000;
+                                                }
+
+            div.ncsvgmap-tooltip-above:after    {   display:none; }
+            div.ncsvgmap-tooltip-right:after    {   margin:-10px 10% 0 auto; }
+            div.ncsvgmap-tooltip-right:before   {   margin:0 10% -10px auto; }
+            div.ncsvgmap-tooltip-left:after     {   margin:-10px auto 0 10%; }
+            div.ncsvgmap-tooltip-left:before    {   margin:0 auto -10px 10%; }
+
+
+
+            #demosvg.ncsvgmap-fadein            {
+                                                    -webkit-animation:ncsvgmap-fadein 1s;
+                                                    -moz-animation:ncsvgmap-fadein 1s;
+                                                    animation:ncsvgmap-fadein 1s;
+                                                    opacity:1;
+                                                }
+
+            @-webkit-keyframes ncsvgmap-fadein  {
+                                                    0%   { opacity: 0.0; }
+                                                    100% { opacity: 1.0; }
+                                                }
+
+            @-moz-keyframes ncsvgmap-fadein     {
+                                                    0%   { opacity: 0.0; }
+                                                    100% { opacity: 1.0; }
+                                                }
+
+            @keyframes ncsvgmap-fadein          {
+                                                    0%   { opacity: 0.0; }
+                                                    100% { opacity: 1.0; }
+                                                }
+
+        </style>
+    </head>
+    <body>
+
+        <div>
+<!-- Begin Body - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+            <h1>jQuery.NC SVG Map</h1>
+
+            <h2>Demo SVG</h2>
+            
+            <div id="demosvg">
+                
+                <!-- display svg -->
+                
+            </div>
+            
+
+<!-- End Body - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        </div>
+        
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="jquery.simplesvg.js"></script>
+        <script src="jquery.ncsvgmap.js"></script>
+        <script>
+        
+            (function(window, $, undefined){
+            
+                $(window.document).ready(function()
+                {
+                    $.ncsvgmap({
+                        displayelement: $('#demosvg'),
+                        svgfile:        'ncstatemap.svg',
+                        svgselector:    ['.county > g','.ncsvgmap-datapoint', 'select'],
+                        hover:          'ncsvgmap-hover',
+                        
+                        //-- add whatever events you want, just remember you have to filter the element triggers
+                        events:
+                        {
+                            mouseover:function(event, svgdata, geodata, tooltip, sidedisplay)
+                            {
+                                if(this.nodeName.toLowerCase() === 'circle')
+                                {
+                                    $(tooltip).show();
+                                }
+    
+                                if(this.nodeName.toLowerCase() === 'g')
+                                {
+                                    $(sidedisplay).show();
+                                }
+                            },
+    
+                            click:function(event, svgdata, geodata, tooltip, sidedisplay)
+                            {
+                                var self = this;
+                                
+                                if(this.nodeName.toLowerCase() === 'select')
+                                {
+                                    event.preventDefault();
+                                    return;
+                                }
+                                
+                                console.log({context:self, arguments:arguments});
+                            },
+    
+                            mouseout:function(event, svgdata, geodata, tooltip, sidedisplay)
+                            {
+                                $(sidedisplay).hide();
+                                $(tooltip).hide();
+                            },
+    
+                            change:function()
+                            {
+                                var self = this;
+                                
+                                console.log({context:self, arguments:arguments});
+                            }
+                        },
+    
+    
+                        //-- add some coordinates and labels
+                        geodata:function() //-- able to use deferreds
+                        {
+                            var def = new $.Deferred();
+    
+                            setTimeout(function(){
+                                def.resolve( [
+                                    {id:0,          lat:35.2270869, lon:-80.8431267, desc:'wooot one'},
+                                    {id:"second",   lat:35.772096,  lon:-78.6386145, desc:'woot two'},
+                                    {id:"third",    lat:35.9131996, lon:-79.0558445, desc:'woot three'}
+                                ] );
+                            },1000);
+    
+    
+                            return def.promise();
+                        },
+    
+                        //-- create a dropdown list based off of the same SVG/XML
+                        unsupported:function(svgdata)
+                        {
+                            var template = $('<select></select>');
+    
+                            svgdata.nodes.sort(function(a,b)
+                            {
+                                var name1 = $(a).attr('id'),
+                                    name2 = $(b).attr('id');
+                                return name1 > name2;
+                            });
+    
+                            $(svgdata.nodes).each(function()
+                            {
+                                var jself       = $(this),
+                                    realid      = $.trim(jself.attr('data-id')),
+                                    name        = $.trim(jself.attr('data-name')),
+                                    desc        = $.trim(jself.attr('data-desc')),
+                                    option      = $( '<option value="{0}">{1}</option>'.replace('{0}', realid).replace('{1}', name) );
+    
+                                template.append(option);
+                            });
+    
+                            return template;
+                        },
+    
+                        error:null,
+    
+                        complete:function(svgdata, geodata)
+                        {
+                            var self = this;
+                            console.log({context:self, arguments:arguments});
+                            
+                            $(svgdata.data.parent).addClass('ncsvgmap-fadein');
+                        }
+    
+                    });
+    
+                });
+            
+            })(this, jQuery);
+        
+        </script>
+        
+        
+    </body>
+</html>
