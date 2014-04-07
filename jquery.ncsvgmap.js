@@ -1,6 +1,6 @@
 /*
 * NC SVG Plugin
-* Copyright 2014, CDCabrera, menotyou.com
+* Copyright 2014, CDCabrera, menotyou.com & JPstreich, jpstreich.com
 * licensed under MIT license, http://opensource.org/licenses/mit-license.php
 *
 */
