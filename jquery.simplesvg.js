@@ -1,7 +1,6 @@
 /*
 * SVG Plugin
 * Copyright 2013, CDCabrera, menotyou.com
-* GitHub, https://github.com/cdcabrera/jquery-simplesvg
 * licensed under MIT license, http://opensource.org/licenses/mit-license.php
 *
 * Utilized Keith Wood's SVG for jQuery v1.4.5 plugin as a reference for what class methods to include
@@ -254,6 +253,7 @@
             cssplacement    :   $(document).find('head > title,head > link').last(), //-- DOM element, jQuery element, CSS selector string or function returning the aforementioned: where the SVG css is inserted if it contains any - helps IE
             events          :   {},                                             //-- object: object of events applied to the svg as a whole, use the form of { 'cssselector' : {click:function(){}, mouseover:function(){}} }
             autoshow        :   true,                                           //-- boolean: plugin automatically appends and shows content, otherwise user appends content using the "complete" callback
+            cache           :   false,                                          //-- boolean: cache svg/xml
             complete        :   null,                                           //-- function: callback for plugin loaded
             unsupported     :   null,                                           //-- DOM element, jQuery element, CSS selector string, html string or function that returns all of the aforementioned: displays alternate content for unsupported browsers. This creates a deep clone and detaches the original element if it exists.
             error           :   null                                            //-- function: svg data loading error
@@ -284,13 +284,14 @@
         function GetSVGData()
         {
             var def     = new $.Deferred(),
-                file    = _settings.file;
+                file    = _settings.file,
+                cache   = _settings.cache;
 
             $.ajax(
             {
                 url         :   file,
                 dataType    :   'text', //-- bypass malformed "xml"
-                cache       :   false,
+                cache       :   cache,
                 error       :   function()
                                 {
                                     def.resolve(null);
