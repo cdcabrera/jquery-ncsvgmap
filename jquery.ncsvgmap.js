@@ -19,6 +19,7 @@
             offsetlatlon:   {top:10, left:0},                //-- object: offset the pixel translation coordinates
             offsettooltips: {top:20, left:0},
             tooltipbounds:  $(window),                      //-- multitype: DOM element, jQuery element, CSS selector string for element used as the bounds for tooltips
+            cachesvg:       false,                          //-- boolean: cache svg/xml
             mapbounds:      {                               //-- most eastern, northern, western, and southern coords your map contains
                                 westlon:-84.333333,
                                 eastlon:-75.333333,
@@ -89,6 +90,7 @@
                 autoshow    :   true,
                 unsupported :   _settings.unsupported,
                 events      :   MapEvents(),
+                cache       :   _settings.cachesvg,
                 complete    :   function(d)
                                 {
                                     def.resolve( d );
